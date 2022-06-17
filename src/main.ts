@@ -1,19 +1,21 @@
-import * as core from '@actions/core'
-import {wait} from './wait'
+import * as core from '@actions/core';
+import { createAppAuth } from '@octokit/auth-app';
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
-
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
-
-    core.setOutput('time', new Date().toTimeString())
+    const token = core.getInput('token', { required: true });
+    const payload = JSON.parse(Buffer.from(token, 'base64').toString());
+    const auth = createAppAuth({
+      appId: +payload.appId,
+      privateKey: payload.privateKey,
+      installationId: +payload.installationId,
+    });
+    const installationToken = (await auth({ type: 'installation' })).token;
+    core.setSecret(installationToken);
+    core.setOutput('installation-token', installationToken);
   } catch (error) {
-    if (error instanceof Error) core.setFailed(error.message)
+    if (error instanceof Error) core.setFailed(error.message);
   }
 }
 
-run()
+run();
