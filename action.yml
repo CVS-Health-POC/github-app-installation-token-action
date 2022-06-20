@@ -1,11 +1,13 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'GitHub App Installation Token'
+description: 'Outputs a GitHub app installation access token'
+author: 'DevSecOps'
 inputs:
-  milliseconds: # change this
+  token:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'A custom token which is generated using btoa(JSON.stringify({ appId, installationId, privateKey }))'
+outputs:
+  installation-token:
+    description: 'The GitHub app installation token'
 runs:
   using: 'node16'
   main: 'dist/index.js'

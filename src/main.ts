@@ -7,8 +7,8 @@ async function run(): Promise<void> {
     const payload = JSON.parse(Buffer.from(token, 'base64').toString());
     const auth = createAppAuth({
       appId: +payload.appId,
-      privateKey: payload.privateKey,
       installationId: +payload.installationId,
+      privateKey: payload.privateKey,
     });
     const installationToken = (await auth({ type: 'installation' })).token;
     core.setSecret(installationToken);
