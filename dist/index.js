@@ -48,8 +48,8 @@ function run() {
             const payload = JSON.parse(Buffer.from(token, 'base64').toString());
             const auth = (0, auth_app_1.createAppAuth)({
                 appId: +payload.appId,
-                privateKey: payload.privateKey,
                 installationId: +payload.installationId,
+                privateKey: payload.privateKey,
             });
             const installationToken = (yield auth({ type: 'installation' })).token;
             core.setSecret(installationToken);
