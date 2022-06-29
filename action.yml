@@ -4,7 +4,7 @@ author: 'DevSecOps'
 inputs:
   token:
     required: true
-    description: 'A custom token which is generated using btoa(JSON.stringify({ appId, installationId, privateKey }))'
+    description: 'A custom token which is generated using Buffer.from(JSON.stringify({ appId, installationId, privateKey })).toString("base64")'
 outputs:
   installation-token:
     description: 'The GitHub app installation token'
